@@ -38,6 +38,7 @@ android {
         applicationId 'kweli.agents.kweli_agents_fe'
         minSdkVersion 16
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -53,6 +54,7 @@ android {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.1')
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 flutter {
