@@ -45,4 +45,8 @@ class AuthProvider with ChangeNotifier {
 
     return await auth.signInWithCredential(credential);
   }
+
+  Future<void> signOut() async {
+    return await auth.signOut();
+  }
 }
