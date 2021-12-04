@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="kweli.agents.kweli_agents_fe">
    <application
-        android:label="kweli_agents_fe"
+        android:label="K-Agents"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

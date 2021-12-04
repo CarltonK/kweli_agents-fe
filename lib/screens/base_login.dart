@@ -1,4 +1,3 @@
-import 'dart:developer' show log;
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +16,6 @@ class _BaseLoginScreenState extends State<BaseLoginScreen> {
     context
         .read<AuthProvider>()
         .signInWithGoogle()
-        .then((value) => {log('${value}')})
         .catchError((error, stackTrace) {
       dialogInfo(context, '$error', 'Error');
     });
