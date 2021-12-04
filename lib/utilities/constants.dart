@@ -9,6 +9,24 @@ class Constants {
   Constants.empty();
 
   /*
+  SIZING
+  */
+  static const double padding = 20;
+  static const double avatarRadius = 45;
+
+  /*
+  Duration
+  */
+  static const Duration veryFluidDuration = Duration(milliseconds: 200);
+  static const Duration fluidDuration = Duration(milliseconds: 500);
+  static const Duration normalDuration = Duration(seconds: 1);
+
+  /*
+  Curves
+  */
+  static Curve verySmoothCurve = Curves.easeOutCubic;
+
+  /*
   THEME
   */
   static ThemeData appTheme = ThemeData(
@@ -59,13 +77,8 @@ class Constants {
     ],
   );
 
-  static InputDecoration otpInputDecoration = InputDecoration(
-    contentPadding: EdgeInsets.symmetric(
-      vertical: getProportionateScreenWidth(15),
-    ),
-    border: outlineInputBorder,
-    focusedBorder: outlineInputBorder,
-    enabledBorder: outlineInputBorder,
+  static const InputBorder blackInputBorder = UnderlineInputBorder(
+    borderSide: BorderSide(color: Colors.black),
   );
 
   static OutlineInputBorder outlineInputBorder = OutlineInputBorder(
