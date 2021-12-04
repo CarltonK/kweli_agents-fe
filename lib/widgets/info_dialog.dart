@@ -67,7 +67,7 @@ class InfoDialog extends StatelessWidget {
                 height: 150,
                 width: 150,
                 child: Image.asset(
-                  'assets/launcher/ksmart-transparent-logo.png',
+                  'assets/launchers/ksmart-transparent-logo.png',
                   fit: BoxFit.contain,
                 ),
               ),

@@ -1,11 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kweli_agents_fe/widgets/widgets.dart';
+import 'screens/screens.dart';
+import 'widgets/widgets.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
+import 'provider/provider.dart';
 import 'utilities/utilities.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  final List<SingleChildWidget> providers = [
+    ChangeNotifierProvider(create: (context) => AuthProvider.instance()),
+  ];
+  runApp(MultiProvider(providers: providers, child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -35,7 +42,15 @@ class _MyAppState extends State<MyApp> {
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return const Scaffold();
+            return Consumer<AuthProvider>(
+              builder: (context, value, child) {
+                if (value.status == Status.Authenticated) {
+                  return const BaseHomeScreen();
+                }
+                return child!;
+              },
+              child: const BaseLoginScreen(),
+            );
           }
           return const GlobalLoader();
         },
