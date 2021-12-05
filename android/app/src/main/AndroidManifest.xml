@@ -2,6 +2,7 @@
     package="kweli.agents.kweli_agents_fe">
    <application
         android:label="K-Agents"
+        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
