@@ -12,11 +12,19 @@
             }
         },
         "oauth_client": [{
-                "client_id": "923442588430-4hhm5nl8toshu5r98v49u788o584um28.apps.googleusercontent.com",
+                "client_id": "923442588430-8tilr1gabo0qfou1e331k2ol4m0kmcho.apps.googleusercontent.com",
                 "client_type": 1,
                 "android_info": {
                     "package_name": "kweli.agents.kweli_agents_fe",
-                    "certificate_hash": "22922c03d25b48146bd97d4ee3ef669581f83fb1"
+                    "certificate_hash": "d284b233945a15bb508ec0165c6303f18ce3ea3b"
+                }
+            },
+            {
+                "client_id": "923442588430-e799a5ue7iv8ob98nf6qb5jm5e7hmgva.apps.googleusercontent.com",
+                "client_type": 1,
+                "android_info": {
+                    "package_name": "kweli.agents.kweli_agents_fe",
+                    "certificate_hash": "095723ffcf683cfb71db04f03a686f41c445cf07"
                 }
             },
             {
