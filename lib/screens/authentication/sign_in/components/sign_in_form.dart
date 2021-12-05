@@ -75,7 +75,7 @@ class _SignInFormState extends State<SignInForm> {
     return TextFormField(
       obscureText: true,
       textInputAction: TextInputAction.done,
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       focusNode: _focusPassword,
       onFieldSubmitted: (value) {
         KeyboardUtil.hideKeyboard(context);
