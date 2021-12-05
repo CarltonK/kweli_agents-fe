@@ -47,9 +47,12 @@ class _MyAppState extends State<MyApp> {
                 if (value.status == Status.Authenticated) {
                   return const BaseHomeScreen();
                 }
+                if (value.status == Status.Authenticating) {
+                  return const GlobalLoader();
+                }
                 return child!;
               },
-              child: const BaseLoginScreen(),
+              child: const SignInScreen(),
             );
           }
           return const GlobalLoader();

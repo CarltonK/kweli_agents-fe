@@ -9,6 +9,20 @@ class Constants {
   Constants.empty();
 
   /*
+  REGEX
+  */
+  static RegExp emailValidatorRegExp =
+      RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+
+  /*
+  FORM ERRORS
+  */
+  static const String kInvalidEmailError = 'Please enter a valid email';
+  static const String kPassNullError = 'Please enter your password';
+  static const String kShortPassError = 'Password is too short';
+  static const String kMatchPassError = 'Passwords don\'t match';
+
+  /*
   SIZING
   */
   static const double padding = 20;
