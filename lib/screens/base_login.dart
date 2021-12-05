@@ -1,7 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../provider/provider.dart';
 import '../utilities/utilities.dart';
 
 class BaseLoginScreen extends StatefulWidget {
@@ -12,14 +11,7 @@ class BaseLoginScreen extends StatefulWidget {
 }
 
 class _BaseLoginScreenState extends State<BaseLoginScreen> {
-  _loginHandler() {
-    context
-        .read<AuthProvider>()
-        .signInWithGoogle()
-        .catchError((error, stackTrace) {
-      dialogInfo(context, '$error', 'Error');
-    });
-  }
+  _loginHandler() {}
 
   Widget _buildGoogleSignInButton() {
     return GestureDetector(
