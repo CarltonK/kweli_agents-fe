@@ -21,6 +21,8 @@ class Constants {
   static const String kPassNullError = 'Please enter your password';
   static const String kShortPassError = 'Password is too short';
   static const String kMatchPassError = 'Passwords don\'t match';
+  static const String kNamelNullError = 'Please enter your full name';
+  static const String kPhoneNumberNullError = 'Please enter your phone number';
 
   /*
   SIZING

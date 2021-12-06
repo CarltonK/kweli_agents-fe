@@ -6,7 +6,7 @@ class DatabaseProvider {
 
   DatabaseProvider() {
     // Comment this line for production
-    _db.useFirestoreEmulator('localhost', 8080);
+    // _db.useFirestoreEmulator('localhost', 8080);
   }
 
   Future saveAgent(AgentModel user, String uid) async {

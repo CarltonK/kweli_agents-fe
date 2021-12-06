@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/widgets.dart';
-import '../provider/provider.dart';
-import '../utilities/utilities.dart';
+import '../../screens/screens.dart';
+import '../../widgets/widgets.dart';
+import '../../provider/provider.dart';
+import '../../utilities/utilities.dart';
 
 class BaseHomeScreen extends StatefulWidget {
   const BaseHomeScreen({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
+      bottom: _tabHeaders(),
       actions: [
         GlobalCircleButton(
           color: Colors.black,
@@ -37,6 +39,18 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
       ],
     );
   }
+
+  _tabHeaders() {
+    return const TabBar(
+      isScrollable: true,
+      tabs: [
+        TabWidget(title: 'Kiosk'),
+        TabWidget(title: 'Wholesaler'),
+      ],
+    );
+  }
+
+  final List<Widget> _pages = [const KioskForm(), const WholesalerForm()];
 
   @override
   void initState() {
@@ -49,8 +63,14 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onWillPop,
-      child: Scaffold(
-        appBar: _appBar(),
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: _appBar(),
+          body: TabBarView(
+            children: _pages,
+          ),
+        ),
       ),
     );
   }

@@ -18,6 +18,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   AgentModel? user;
   String? emailValue;
+  String? phoneNumber;
+  String? fullName;
   String? passwordValue;
   String? confirmPasswordValue;
   bool canRemember = false;
@@ -26,6 +28,8 @@ class _SignUpFormState extends State<SignUpForm> {
   TextEditingController? _editingController;
   TextEditingController? _confirmPasswordTextController;
 
+  final _focusEmail = FocusNode();
+  final _focusPhoneNumber = FocusNode();
   final _focusPassword = FocusNode();
   final _focusConfirmPassword = FocusNode();
 
@@ -45,10 +49,70 @@ class _SignUpFormState extends State<SignUpForm> {
     }
   }
 
+  TextFormField buildFullNameField() {
+    return TextFormField(
+      textInputAction: TextInputAction.next,
+      keyboardType: TextInputType.text,
+      onSaved: (newValue) => fullName = newValue!.trim(),
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: Constants.kNamelNullError);
+        }
+        return;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: Constants.kNamelNullError);
+          return '';
+        }
+        return null;
+      },
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_focusPhoneNumber);
+      },
+      decoration: const InputDecoration(
+        labelText: 'Full Name',
+        hintText: 'Enter your full name',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+    );
+  }
+
+  TextFormField buildPhoneNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.next,
+      keyboardType: TextInputType.phone,
+      focusNode: _focusPhoneNumber,
+      onSaved: (newValue) => phoneNumber = newValue!.trim(),
+      onChanged: (value) {
+        if (value.isNotEmpty) {
+          removeError(error: Constants.kPhoneNumberNullError);
+        }
+        return;
+      },
+      validator: (value) {
+        if (value!.isEmpty) {
+          addError(error: Constants.kPhoneNumberNullError);
+          return '';
+        }
+        return null;
+      },
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_focusEmail);
+      },
+      decoration: const InputDecoration(
+        labelText: 'Phone Number',
+        hintText: 'Enter your phone number',
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+      ),
+    );
+  }
+
   TextFormField buildEmailAddressField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.emailAddress,
+      focusNode: _focusEmail,
       onSaved: (newValue) => emailValue = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -175,6 +239,8 @@ class _SignUpFormState extends State<SignUpForm> {
         email: emailValue,
         password: passwordValue,
         joinedOn: DateTime.now(),
+        fullName: fullName,
+        phone: phoneNumber,
       );
 
       registrationHandler(user!).then((value) {
@@ -220,6 +286,10 @@ class _SignUpFormState extends State<SignUpForm> {
       key: _signInFormKey,
       child: Column(
         children: [
+          buildFullNameField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
+          buildPhoneNumberField(),
+          SizedBox(height: getProportionateScreenHeight(30)),
           buildEmailAddressField(),
           SizedBox(height: getProportionateScreenHeight(30)),
           buildPasswordFormField(),

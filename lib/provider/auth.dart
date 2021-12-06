@@ -16,7 +16,8 @@ class AuthProvider extends DatabaseProvider with ChangeNotifier {
   User get user => _currentUser!;
 
   AuthProvider.instance() : auth = FirebaseAuth.instance {
-    auth.useAuthEmulator('localhost', 9099);
+    // Comment this line for production
+    // auth.useAuthEmulator('localhost', 9099);
     auth.authStateChanges().listen(_onAuthStateChanged);
   }
 
@@ -41,9 +42,7 @@ class AuthProvider extends DatabaseProvider with ChangeNotifier {
       _currentUser = result.user;
       String uid = _currentUser!.uid;
 
-      // Send an email verification
-      await _currentUser!.sendEmailVerification();
-      // Save the user to the database
+      // Save the agent to the database
       await saveAgent(user, uid);
 
       return Future.value(_currentUser);
