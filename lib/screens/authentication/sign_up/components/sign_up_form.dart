@@ -112,7 +112,6 @@ class _SignUpFormState extends State<SignUpForm> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.emailAddress,
-      autocorrect: false,
       focusNode: _focusEmail,
       onSaved: (newValue) => emailValue = newValue!.trim(),
       onChanged: (value) {
