@@ -17,7 +17,7 @@ class AuthProvider extends DatabaseProvider with ChangeNotifier {
 
   AuthProvider.instance() : auth = FirebaseAuth.instance {
     // Comment this line for production
-    auth.useAuthEmulator('localhost', 9099);
+    // auth.useAuthEmulator('localhost', 9099);
     auth.authStateChanges().listen(_onAuthStateChanged);
   }
 
