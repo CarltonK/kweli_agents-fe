@@ -13,5 +13,13 @@ service cloud.firestore {
     match /agents/{agent} {
       allow create: if isSignedIn();
     }
+
+    match /kiosks/{kiosk} {
+      allow create: if isSignedIn();
+    }
+
+    match /wholesalers/{wholesaler} {
+      allow create: if isSignedIn();
+    }
   }
 }
