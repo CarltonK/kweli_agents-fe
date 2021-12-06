@@ -1,4 +1,5 @@
 export 'info_dialog.dart';
+export 'tab_widget.dart';
 
 export 'global/global_loader.dart';
 export 'global/global_error_contained.dart';
