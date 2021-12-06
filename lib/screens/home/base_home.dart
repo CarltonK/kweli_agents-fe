@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/models.dart';
+import '../../services/services.dart';
 import '../../screens/screens.dart';
 import '../../widgets/widgets.dart';
 import '../../provider/provider.dart';
@@ -14,6 +16,8 @@ class BaseHomeScreen extends StatefulWidget {
 
 class _BaseHomeScreenState extends State<BaseHomeScreen> {
   AuthProvider? _authProvider;
+  Location? devicePosition;
+
   Future<bool> _onWillPop() {
     return _buildPopStack() ?? false;
   }
@@ -57,6 +61,12 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
     super.initState();
 
     _authProvider = context.read<AuthProvider>();
+    getDevicePosition().then((value) {
+      devicePosition = Location(
+        latitude: value.latitude,
+        longitude: value.longitude,
+      );
+    });
   }
 
   @override
