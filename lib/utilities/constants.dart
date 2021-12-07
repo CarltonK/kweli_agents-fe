@@ -17,7 +17,8 @@ class Constants {
   /*
   FORM ERRORS
   */
-  static const String kRequiredField = 'This field is required';
+  /* DO NOT CHANGE */
+  static const String kRequiredField = ' field is required';
   static const String kInvalidEmailError = 'Please enter a valid email';
   static const String kPassNullError = 'Please enter your password';
   static const String kShortPassError = 'Password is too short';

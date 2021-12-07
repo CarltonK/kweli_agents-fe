@@ -78,13 +78,13 @@ class _WholesalerFormState extends State<WholesalerForm> {
       onSaved: (newValue) => _shopName = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: Constants.kRequiredField);
+          removeError(error: 'Wholesaler shop name' + Constants.kRequiredField);
         }
         return;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: Constants.kRequiredField);
+          addError(error: 'Wholesaler shop name' + Constants.kRequiredField);
           return;
         }
         return null;
@@ -106,13 +106,13 @@ class _WholesalerFormState extends State<WholesalerForm> {
       onSaved: (newValue) => _ownerName = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: Constants.kRequiredField);
+          removeError(error: 'Owner name' + Constants.kRequiredField);
         }
         return;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: Constants.kRequiredField);
+          addError(error: 'Owner name' + Constants.kRequiredField);
           return;
         }
         return null;
@@ -134,13 +134,13 @@ class _WholesalerFormState extends State<WholesalerForm> {
       onSaved: (newValue) => _ownerMobile = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
-          removeError(error: Constants.kRequiredField);
+          removeError(error: 'Owner mobile' + Constants.kRequiredField);
         }
         return;
       },
       validator: (value) {
         if (value!.isEmpty) {
-          addError(error: Constants.kRequiredField);
+          addError(error: 'Owner mobile' + Constants.kRequiredField);
           return;
         }
         return null;
