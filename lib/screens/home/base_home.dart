@@ -33,6 +33,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
       backgroundColor: Colors.white,
       elevation: 0,
       bottom: _tabHeaders(),
+      title: const Text('K-Agents'),
       actions: [
         GlobalCircleButton(
           color: Colors.black,
@@ -54,7 +55,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
     );
   }
 
-  final List<Widget> _pages = [const KioskForm(), const WholesalerForm()];
+  final List<Widget> _pages = [const KioskForm(), const WholesalerScreen()];
 
   @override
   void initState() {
