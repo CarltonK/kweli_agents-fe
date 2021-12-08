@@ -69,7 +69,15 @@ class _WholesalerFormState extends State<WholesalerForm> {
     }
   }
 
-  String? _shopName, _ownerName, _ownerMobile;
+  String? _shopName,
+      _ownerName,
+      _ownerMobile,
+      _mpesaTillNumber,
+      _mpesaPaybillNumber,
+      _mpesaPaybillAccountNumber,
+      _equityTill,
+      _kcbTill,
+      _otherPaymentInfo;
 
   final List<String> _goodsSoldSelection = [];
   final List<String> _paymentOptions = [];
@@ -223,6 +231,128 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  TextFormField buildOtherPaymentInfoField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _otherPaymentInfo ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _otherPaymentInfo = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Other payment information',
+      ),
+    );
+  }
+
+  _kcbTillSection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _paymentOptions.contains('KCB till')
+          ? buildKCBTillNumberField()
+          : Container(),
+    );
+  }
+
+  TextFormField buildKCBTillNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _kcbTill ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _kcbTill = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'KCB Till Number',
+      ),
+    );
+  }
+
+  _equityTillSection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _paymentOptions.contains('Equity till')
+          ? buildEquityTillNumberField()
+          : Container(),
+    );
+  }
+
+  TextFormField buildEquityTillNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _equityTill ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _equityTill = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Equity Till Number',
+      ),
+    );
+  }
+
+  _mpesaTillNumberSection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _paymentOptions.contains('Mpesa till')
+          ? buildTillNumberField()
+          : Container(),
+    );
+  }
+
+  TextFormField buildTillNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _mpesaTillNumber ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _mpesaTillNumber = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Mpesa Till Number',
+      ),
+    );
+  }
+
+  _mpesaPaybillNumberSection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _paymentOptions.contains('Mpesa paybill')
+          ? Column(
+              children: [
+                buildMpesaPaybillNumberField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildMpesaPaybillAccountNumberField(),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildMpesaPaybillNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _mpesaPaybillNumber ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _mpesaPaybillNumber = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Mpesa Paybill Number',
+      ),
+    );
+  }
+
+  TextFormField buildMpesaPaybillAccountNumberField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _mpesaPaybillAccountNumber ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _mpesaPaybillAccountNumber = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Mpesa Paybill Account Number',
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -239,6 +369,15 @@ class _WholesalerFormState extends State<WholesalerForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           _buildPaymentOptionsSelector(),
           SizedBox(height: getProportionateScreenHeight(20)),
+          _mpesaTillNumberSection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _mpesaPaybillNumberSection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _equityTillSection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _kcbTillSection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          buildOtherPaymentInfoField(),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
