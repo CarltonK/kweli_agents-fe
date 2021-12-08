@@ -71,6 +71,13 @@ class _WholesalerFormState extends State<WholesalerForm> {
 
   String? _shopName, _ownerName, _ownerMobile;
 
+  final List<String> _goodsSoldSelection = [];
+  final List<String> _paymentOptions = [];
+
+  bool isIncluded(String value, List<String> custom) {
+    return custom.contains(value) ? true : false;
+  }
+
   TextFormField buildWholesalerShopNameField() {
     return TextFormField(
       textInputAction: TextInputAction.next,
@@ -152,6 +159,70 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  _buildGoodsSoldSelector() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Which goods are sold?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.wholesalerGoodsSold
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isIncluded(e, _goodsSoldSelection),
+                        onSelected: (newValue) {
+                          if (!_goodsSoldSelection.contains(e)) {
+                            _goodsSoldSelection.add(e);
+                          } else {
+                            _goodsSoldSelection.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildPaymentOptionsSelector() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('How do your customers pay you?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.wholesalerPaymentOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isIncluded(e, _paymentOptions),
+                        onSelected: (newValue) {
+                          if (!_paymentOptions.contains(e)) {
+                            _paymentOptions.add(e);
+                          } else {
+                            _paymentOptions.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -164,11 +235,15 @@ class _WholesalerFormState extends State<WholesalerForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           buildWholesalerOwnerMobileField(),
           SizedBox(height: getProportionateScreenHeight(20)),
+          _buildGoodsSoldSelector(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildPaymentOptionsSelector(),
+          SizedBox(height: getProportionateScreenHeight(20)),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
             action: 'Create',
-            onPressed: () {},
+            onPressed: () => print(_goodsSoldSelection),
           ),
         ],
       ),

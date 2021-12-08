@@ -108,4 +108,21 @@ class Constants {
   static RoundedRectangleBorder curvedRectBorder = RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(20),
   );
+
+  /*
+  APP-SPECIFIC 
+  */
+  static const List<String> wholesalerGoodsSold = [
+    'FMCG goods',
+    'Gas Outlet',
+    'Wines and Spirits'
+  ];
+
+  static const List<String> wholesalerPaymentOptions = [
+    'Mpesa till',
+    'Mpesa paybill',
+    'Equity till',
+    'KCB till',
+    'Others'
+  ];
 }
