@@ -55,7 +55,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
     );
   }
 
-  final List<Widget> _pages = [const KioskForm(), const WholesalerScreen()];
+  final List<Widget> _pages = [const KioskScreen(), const WholesalerScreen()];
 
   @override
   void initState() {

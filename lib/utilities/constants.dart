@@ -125,4 +125,41 @@ class Constants {
     'KCB till',
     'Others'
   ];
+
+  static const List<String> kioskGoodsSold = [
+    'FMCG goods',
+    'Food Kibandaski',
+    'Gas Outlet',
+    'Mama Mboga',
+    'Wines and Spirits'
+  ];
+
+  static const List<String> kioskSupplierPaymentOptions = [
+    'Cash',
+    'Mpesa',
+    'Bank Deposit'
+  ];
+
+  static const List<String> mpesaAccepted = ['Yes', 'No'];
+
+  static const List<String> buyFromApp = ['Yes', 'No'];
+
+  static const List<String> genderOptions = ['Male', 'Female'];
+
+  static const List<String> ownedRented = ['Owned', 'Rented'];
+
+  static const List<String> businessDuration = [
+    '1 - 2 months',
+    '3 - 5 months',
+    '6 - 8 months',
+    '>12months'
+  ];
+
+  static const List<String> shopPaymentOptions = [
+    'Mpesa till',
+    'Mpesa paybill',
+    'Equity till',
+    'KCB till',
+    'Others'
+  ];
 }
