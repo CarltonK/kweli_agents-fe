@@ -19,7 +19,6 @@ class _SignInFormState extends State<SignInForm> {
   AgentModel? user;
   String? emailValue;
   String? passwordValue;
-  TextEditingController? _editingController;
   bool canRemember = false;
   final List<String> errors = [];
 
@@ -45,7 +44,6 @@ class _SignInFormState extends State<SignInForm> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.emailAddress,
-      controller: _editingController,
       onSaved: (newValue) => emailValue = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -141,18 +139,6 @@ class _SignInFormState extends State<SignInForm> {
         });
       });
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _editingController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _editingController!.dispose();
-    super.dispose();
   }
 
   @override
