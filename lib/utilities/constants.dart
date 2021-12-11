@@ -161,6 +161,13 @@ class Constants {
     'Others'
   ];
 
+  static const List<String> otherProducts = [
+    'Airtime',
+    'Kplc tokens',
+    'Other bill payments',
+    'Mpesa Withdrawal/deposit',
+  ];
+
   static const String viabilityForWholesaler = 'Are you happy for your '
       'customers to buy their goods through you via an app. You get paid immediately but '
       'you have to confirm goods are available and prices, with payments received to'

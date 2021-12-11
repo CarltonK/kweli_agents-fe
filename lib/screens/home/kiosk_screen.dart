@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kweli_agents_fe/widgets/widgets.dart';
 import '../../utilities/utilities.dart';
 
 class KioskScreen extends StatelessWidget {
@@ -75,7 +76,14 @@ class _KioskFormState extends State<KioskForm> {
       _mpesaPaybillAccountNumber,
       _equityTill,
       _kcbTill,
-      _otherPaymentInfo;
+      _otherPaymentInfo,
+      _personRunning,
+      _creditAllowed,
+      _outlet,
+      _mpesaTill,
+      _computerSystem,
+      _financing,
+      _personRunningMobile;
 
   final List<String> _goodsSoldSelection = [];
   final List<String> _paymentOptions = [];
@@ -86,6 +94,13 @@ class _KioskFormState extends State<KioskForm> {
   final List<String> _ownershipOptions = [];
   final List<String> _businessDuration = [];
   final List<String> _locationDuration = [];
+  final List<String> _ownerRunning = [];
+  final List<String> _creditAccepted = [];
+  final List<String> _recordSales = [];
+  final List<String> _delivery = [];
+  final List<String> _computerizedSystem = [];
+  final List<String> _otherOutlets = [];
+  final List<String> _otherProducts = [];
   bool isChecked(String value, List<String> custom) {
     return custom.contains(value) ? true : false;
   }
@@ -597,6 +612,392 @@ class _KioskFormState extends State<KioskForm> {
     );
   }
 
+  _buildOwnerRun() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Is the owner running the kiosk?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _ownerRunning),
+                        onSelected: (newValue) {
+                          if (!_ownerRunning.contains(e)) {
+                            _ownerRunning.add(e);
+                          } else {
+                            _ownerRunning.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _notOwnerRunSelection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _ownerRunning.contains('No')
+          ? Column(
+              children: [
+                buildPersonRunningNameField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildPersonRunningMobileField(),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildPersonRunningNameField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _personRunning ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _personRunning = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Employee name',
+      ),
+    );
+  }
+
+  TextFormField buildPersonRunningMobileField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _personRunningMobile ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _personRunningMobile = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Employee mobile number',
+      ),
+    );
+  }
+
+  _buildCreditOption() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Do you sell on credit?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _creditAccepted),
+                        onSelected: (newValue) {
+                          if (!_creditAccepted.contains(e)) {
+                            _creditAccepted.add(e);
+                          } else {
+                            _creditAccepted.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _creditAcceptedSelection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _creditAccepted.contains('Yes')
+          ? Column(
+              children: [
+                buildCreditDaysField(),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildCreditDaysField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _creditAllowed ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _creditAllowed = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'How long do people take to pay you?',
+      ),
+    );
+  }
+
+  _buildOtherOutlets() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Do you have other outlets?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _otherOutlets),
+                        onSelected: (newValue) {
+                          if (!_otherOutlets.contains(e)) {
+                            _otherOutlets.add(e);
+                          } else {
+                            _otherOutlets.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _otherOutletsSelection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _otherOutlets.contains('Yes')
+          ? Column(
+              children: [
+                buildotherOutletsLocationField(),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildotherOutletsLocationField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _outlet ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _outlet = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Location of the other outlet',
+      ),
+    );
+  }
+
+  _buildOtherProducts() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('What other products/services do you offer?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.otherProducts
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _otherProducts),
+                        onSelected: (newValue) {
+                          if (!_otherProducts.contains(e)) {
+                            _otherProducts.add(e);
+                          } else {
+                            _otherProducts.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _mpesaAgentSelection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _otherProducts.contains('Mpesa Withdrawal/deposit')
+          ? Column(
+              children: [
+                buildMpesaTillField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildFinancingOptionField()
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildMpesaTillField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _mpesaTill ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _mpesaTill = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Mpesa Till number',
+      ),
+    );
+  }
+
+  TextFormField buildFinancingOptionField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _financing ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _financing = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Would you need credit for your float?',
+      ),
+    );
+  }
+
+  _buildDeliveryOption() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Would you like your purchases delivereed at a fee?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _delivery),
+                        onSelected: (newValue) {
+                          if (!_delivery.contains(e)) {
+                            _delivery.add(e);
+                          } else {
+                            _delivery.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildRecordSalesOption() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Would you use the app to record sales and expenditure?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _recordSales),
+                        onSelected: (newValue) {
+                          if (!_recordSales.contains(e)) {
+                            _recordSales.add(e);
+                          } else {
+                            _recordSales.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildcComputerizedSystemOptions() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text(
+              'Do you keep computerized records of daily sales/expenditure/customers who owe you ?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Wrap(
+            direction: Axis.horizontal,
+            children: Constants.yesNoOptions
+                .map((e) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: ChoiceChip(
+                        label: Text(e),
+                        selected: isChecked(e, _computerizedSystem),
+                        onSelected: (newValue) {
+                          if (!_computerizedSystem.contains(e)) {
+                            _computerizedSystem.add(e);
+                          } else {
+                            _computerizedSystem.remove(e);
+                          }
+                          setState(() {});
+                        },
+                      ),
+                    ))
+                .toList(),
+          )
+        ],
+      ),
+    );
+  }
+
+  _computerizedSystemSelection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _computerizedSystem.contains('Yes')
+          ? Column(
+              children: [buildSystemField()],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildSystemField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _computerSystem ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _computerSystem = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'What system/application do you use?',
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -636,6 +1037,35 @@ class _KioskFormState extends State<KioskForm> {
           _equityTillSection(),
           SizedBox(height: getProportionateScreenHeight(20)),
           _kcbTillSection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildOwnerRun(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _notOwnerRunSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildCreditOption(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _creditAcceptedSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildOtherOutlets(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _otherOutletsSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildOtherProducts(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _mpesaAgentSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildRecordSalesOption(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildDeliveryOption(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildcComputerizedSystemOptions(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _computerizedSystemSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          GlobalActionButton(
+            action: 'Submit',
+            onPressed: () {},
+          ),
         ],
       ),
     );
