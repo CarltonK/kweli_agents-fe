@@ -50,7 +50,7 @@ class _BaseHomeScreenState extends State<BaseHomeScreen> {
       isScrollable: true,
       tabs: [
         TabWidget(title: 'Kiosk'),
-        TabWidget(title: 'Wholesaler'),
+        TabWidget(title: 'Wholeseller'),
       ],
     );
   }
