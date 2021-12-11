@@ -342,7 +342,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       controller: TextEditingController(text: _minPurchaseAmount ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Minimum purchase amount eligible for delivery',
@@ -407,7 +407,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
     return TextFormField(
       textInputAction: TextInputAction.done,
       controller: TextEditingController(text: _mpesaPaybillAccountNumber ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _mpesaPaybillAccountNumber = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Mpesa Paybill Account Number',
