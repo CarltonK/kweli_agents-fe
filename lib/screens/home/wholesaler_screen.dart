@@ -77,7 +77,11 @@ class _WholesalerFormState extends State<WholesalerForm> {
       _mpesaPaybillAccountNumber,
       _equityTill,
       _kcbTill,
-      _otherPaymentInfo;
+      _otherPaymentInfo,
+      _minPurchaseAmount;
+
+  bool _isHappy = false;
+  bool _doesDeliver = true;
 
   final List<String> _goodsSoldSelection = [];
   final List<String> _paymentOptions = [];
@@ -243,6 +247,17 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  _othersPaymentSection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _paymentOptions.contains('Others')
+          ? buildOtherPaymentInfoField()
+          : Container(),
+    );
+  }
+
   _kcbTillSection() {
     return AnimatedSwitcher(
       duration: Constants.veryFluidDuration,
@@ -300,6 +315,47 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  _doesDeliverySection() {
+    return AnimatedSwitcher(
+      duration: Constants.veryFluidDuration,
+      switchInCurve: Curves.easeInCubic,
+      switchOutCurve: Curves.easeOutCubic,
+      child: _doesDeliver
+          ? Column(
+              children: [
+                buildMinPurchaseAmountForDeliveryField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildRadiusandChargeDeliveryField(),
+              ],
+            )
+          : Container(),
+    );
+  }
+
+  TextFormField buildMinPurchaseAmountForDeliveryField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _minPurchaseAmount ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Minimum purchase amount eligible for delivery',
+      ),
+    );
+  }
+
+  TextFormField buildRadiusandChargeDeliveryField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _minPurchaseAmount ?? ''),
+      keyboardType: TextInputType.number,
+      onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'Other notes about delivery charges and radius',
+      ),
+    );
+  }
+
   TextFormField buildTillNumberField() {
     return TextFormField(
       textInputAction: TextInputAction.done,
@@ -353,6 +409,44 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  _buildViabilitySelector() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text(Constants.viabilityForWholesaler),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Checkbox(
+            value: _isHappy,
+            onChanged: (value) {
+              _isHappy = value!;
+              setState(() {});
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  _buildDeliverySelector() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Do you deliver?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Checkbox(
+            value: _doesDeliver,
+            onChanged: (value) {
+              _doesDeliver = value!;
+              setState(() {});
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -377,7 +471,15 @@ class _WholesalerFormState extends State<WholesalerForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           _kcbTillSection(),
           SizedBox(height: getProportionateScreenHeight(20)),
-          buildOtherPaymentInfoField(),
+          _othersPaymentSection(),
+          const Divider(color: Palette.ksmartPrimary),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildViabilitySelector(),
+          const Divider(color: Palette.ksmartPrimary),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          _buildDeliverySelector(),
+          _doesDeliverySection(),
+          const Divider(color: Palette.ksmartPrimary),
           FormError(errors: errors),
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
