@@ -270,7 +270,7 @@ class _KioskFormState extends State<KioskForm> {
           SizedBox(height: getProportionateScreenHeight(5)),
           Wrap(
             direction: Axis.horizontal,
-            children: Constants.mpesaAccepted
+            children: Constants.yesNoOptions
                 .map((e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
                       child: ChoiceChip(
@@ -303,7 +303,7 @@ class _KioskFormState extends State<KioskForm> {
           SizedBox(height: getProportionateScreenHeight(5)),
           Wrap(
             direction: Axis.horizontal,
-            children: Constants.buyFromApp
+            children: Constants.yesNoOptions
                 .map((e) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 2),
                       child: ChoiceChip(

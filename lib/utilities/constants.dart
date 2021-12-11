@@ -140,9 +140,7 @@ class Constants {
     'Bank Deposit'
   ];
 
-  static const List<String> mpesaAccepted = ['Yes', 'No'];
-
-  static const List<String> buyFromApp = ['Yes', 'No'];
+  static const List<String> yesNoOptions = ['Yes', 'No'];
 
   static const List<String> genderOptions = ['Male', 'Female'];
 
@@ -162,4 +160,11 @@ class Constants {
     'KCB till',
     'Others'
   ];
+
+  static const String viabilityForWholesaler = 'Are you happy for your '
+      'customers to buy their goods through you via an app. You get paid immediately but '
+      'you have to confirm goods are available and prices, with payments received to'
+      ' the your mpesa till number.We don\'t take any commission , '
+      'we are helping kiosks maintain records to enable them access '
+      'affordable credit from ourselves and banks/sacco\'s to buy goods from you';
 }
