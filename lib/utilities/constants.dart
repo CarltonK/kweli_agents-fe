@@ -140,9 +140,7 @@ class Constants {
     'Bank Deposit'
   ];
 
-  static const List<String> mpesaAccepted = ['Yes', 'No'];
-
-  static const List<String> buyFromApp = ['Yes', 'No'];
+  static const List<String> yesNoOptions = ['Yes', 'No'];
 
   static const List<String> genderOptions = ['Male', 'Female'];
 
