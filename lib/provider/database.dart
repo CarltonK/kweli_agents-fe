@@ -12,10 +12,26 @@ class DatabaseProvider {
   Future saveAgent(AgentModel user, String uid) async {
     try {
       user.uid = uid;
-      // Main Doc
       DocumentReference mainDocRef = _db.collection('agents').doc(uid);
-      // Save data
       await mainDocRef.set(user.toFirestore());
+    } on FirebaseException catch (error) {
+      return error.message;
+    }
+  }
+
+  Future saveWholeseller(WholesellerModel wholeseller) async {
+    try {
+      CollectionReference colRef = _db.collection('wholesellers');
+      await colRef.add(wholeseller.toMap());
+    } on FirebaseException catch (error) {
+      return error.message;
+    }
+  }
+
+  Future saveKiosk(KioskModel kiosk) async {
+    try {
+      CollectionReference colRef = _db.collection('kiosks');
+      await colRef.add(kiosk.toMap());
     } on FirebaseException catch (error) {
       return error.message;
     }

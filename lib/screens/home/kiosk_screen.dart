@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kweli_agents_fe/utilities/utilities.dart';
+import '../../utilities/utilities.dart';
 
 class KioskScreen extends StatelessWidget {
   const KioskScreen({Key? key}) : super(key: key);
@@ -121,6 +121,7 @@ class _KioskFormState extends State<KioskForm> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       keyboardType: TextInputType.text,
+      focusNode: _focusOwnerName,
       onSaved: (newValue) => _kioskOwnerName = newValue!.trim(),
       onChanged: (value) {
         if (value.isNotEmpty) {
@@ -136,7 +137,7 @@ class _KioskFormState extends State<KioskForm> {
         return null;
       },
       onFieldSubmitted: (value) {
-        FocusScope.of(context).requestFocus(_focusOwnerName);
+        FocusScope.of(context).requestFocus(_focusOwnerMobile);
       },
       decoration: const InputDecoration(
         helperText: 'Kiosk owner name',
@@ -146,7 +147,7 @@ class _KioskFormState extends State<KioskForm> {
 
   TextFormField buildKioskOwnerMobileField() {
     return TextFormField(
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       keyboardType: TextInputType.number,
       focusNode: _focusOwnerMobile,
       onSaved: (newValue) => _kioskOwnerMobile = newValue!.trim(),

@@ -11,6 +11,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(create: (context) => AuthProvider.instance()),
+    Provider(create: (context) => DatabaseProvider())
   ];
   runApp(MultiProvider(providers: providers, child: const MyApp()));
 }
