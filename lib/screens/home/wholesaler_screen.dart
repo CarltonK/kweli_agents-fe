@@ -1,6 +1,9 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
+import 'package:kweli_agents_fe/provider/provider.dart';
+import 'package:provider/provider.dart';
+import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 import '../../utilities/utilities.dart';
 
@@ -69,6 +72,8 @@ class _WholesalerFormState extends State<WholesalerForm> {
     }
   }
 
+  WholesellerModel? _wholesellerModel;
+
   String? _shopName,
       _ownerName,
       _ownerMobile,
@@ -78,7 +83,8 @@ class _WholesalerFormState extends State<WholesalerForm> {
       _equityTill,
       _kcbTill,
       _otherPaymentInfo,
-      _minPurchaseAmount;
+      _minPurchaseAmount,
+      _otherDeliveryInfo;
 
   bool _isHappy = false;
   bool _doesDeliver = true;
@@ -334,7 +340,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
 
   TextFormField buildMinPurchaseAmountForDeliveryField() {
     return TextFormField(
-      textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.next,
       controller: TextEditingController(text: _minPurchaseAmount ?? ''),
       keyboardType: TextInputType.number,
       onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
@@ -347,9 +353,9 @@ class _WholesalerFormState extends State<WholesalerForm> {
   TextFormField buildRadiusandChargeDeliveryField() {
     return TextFormField(
       textInputAction: TextInputAction.done,
-      controller: TextEditingController(text: _minPurchaseAmount ?? ''),
+      controller: TextEditingController(text: _otherDeliveryInfo ?? ''),
       keyboardType: TextInputType.number,
-      onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
+      onChanged: (newValue) => _otherDeliveryInfo = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Other notes about delivery charges and radius',
       ),
@@ -447,6 +453,57 @@ class _WholesalerFormState extends State<WholesalerForm> {
     );
   }
 
+  Future _onSubmitHandler() async {
+    return await context
+        .read<DatabaseProvider>()
+        .saveWholeseller(_wholesellerModel!);
+  }
+
+  _onSubmitButtonPressed() {
+    final FormState _form = _wholesalerFormKey.currentState!;
+    if (_form.validate()) {
+      _form.save();
+
+      _wholesellerModel = WholesellerModel(
+        doesDeliver: _doesDeliver,
+        equityTillNumber: _equityTill,
+        goodsSold: _goodsSoldSelection,
+        isHappyForProduct: _isHappy,
+        kcbTillNumber: _kcbTill,
+        minPurchaseAmountForDelivery: _minPurchaseAmount,
+        mpesaPaybillAccountNumber: _mpesaPaybillAccountNumber,
+        mpesaPaybillNumber: _mpesaPaybillNumber,
+        mpesaTillNumber: _mpesaTillNumber,
+        otherDeliveryInfo: _otherDeliveryInfo,
+        otherPaymentInfo: _otherPaymentInfo,
+        ownerMobile: _ownerMobile,
+        ownerName: _ownerName,
+        paymentOptions: _paymentOptions,
+        shopName: _shopName,
+      );
+
+      _onSubmitHandler().then((value) {
+        if (value.runtimeType == String) {
+          Future.delayed(Constants.veryFluidDuration, () {
+            dialogInfo(context, value, 'Error');
+          });
+        } else {
+          Future.delayed(Constants.veryFluidDuration, () {
+            dialogSuccess(context, 'Data saved');
+          });
+        }
+      }).catchError((error, trace) {
+        Future.delayed(Constants.veryFluidDuration, () {
+          dialogInfo(
+            context,
+            error.toString(),
+            'Error',
+          );
+        });
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -484,7 +541,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
             action: 'Create',
-            onPressed: () => print(_goodsSoldSelection),
+            onPressed: _onSubmitButtonPressed,
           ),
         ],
       ),
