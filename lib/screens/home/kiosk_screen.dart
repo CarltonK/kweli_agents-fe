@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kweli_agents_fe/widgets/widgets.dart';
+import 'package:provider/provider.dart';
+import '../../models/models.dart';
+import '../../provider/provider.dart';
+import '../../services/services.dart';
+import '../../widgets/widgets.dart';
 import '../../utilities/utilities.dart';
 
 class KioskScreen extends StatelessWidget {
@@ -101,6 +105,10 @@ class _KioskFormState extends State<KioskForm> {
   final List<String> _computerizedSystem = [];
   final List<String> _otherOutlets = [];
   final List<String> _otherProducts = [];
+
+  KioskModel? _kioskModel;
+  Location? _location;
+
   bool isChecked(String value, List<String> custom) {
     return custom.contains(value) ? true : false;
   }
@@ -998,6 +1006,51 @@ class _KioskFormState extends State<KioskForm> {
     );
   }
 
+  Future _onSubmitHandler() async {
+    return await context.read<DatabaseProvider>().saveKiosk(_kioskModel!);
+  }
+
+  _onSubmitButtonPressed() {
+    getDevicePosition().then((value) {
+      _location = Location(
+        latitude: value.latitude,
+        longitude: value.longitude,
+      );
+
+      final FormState _form = _kioskFormKey.currentState!;
+      if (_form.validate()) {
+        _form.save();
+
+        _kioskModel = KioskModel();
+
+        _onSubmitHandler().then((value) {
+          if (value.runtimeType == String) {
+            Future.delayed(Constants.veryFluidDuration, () {
+              dialogInfo(context, value, 'Error');
+            });
+          } else {
+            _form.reset();
+            Future.delayed(Constants.veryFluidDuration, () {
+              dialogSuccess(context, 'Data saved');
+            });
+          }
+        }).catchError((error, trace) {
+          Future.delayed(Constants.veryFluidDuration, () {
+            dialogInfo(
+              context,
+              error.toString(),
+              'Error',
+            );
+          });
+        });
+      }
+    }).catchError((error, trace) {
+      Future.delayed(Constants.veryFluidDuration, () {
+        dialogInfo(context, error.toString(), 'Error');
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -1064,7 +1117,7 @@ class _KioskFormState extends State<KioskForm> {
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
             action: 'Submit',
-            onPressed: () {},
+            onPressed: _onSubmitButtonPressed,
           ),
         ],
       ),

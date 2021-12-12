@@ -1,4 +1,5 @@
 // ignore_for_file: constant_identifier_names
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../models/models.dart';
@@ -22,6 +23,7 @@ class AuthProvider extends DatabaseProvider with ChangeNotifier {
   }
 
   Future<void> _onAuthStateChanged(User? firebaseUser) async {
+    await FirebaseAppCheck.instance.activate();
     if (firebaseUser == null) {
       _status = Status.Unauthenticated;
     } else {
