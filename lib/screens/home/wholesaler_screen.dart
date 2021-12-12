@@ -1,8 +1,9 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
-import 'package:kweli_agents_fe/provider/provider.dart';
 import 'package:provider/provider.dart';
+import '../../services/services.dart';
+import '../../provider/provider.dart';
 import '../../models/models.dart';
 import '../../widgets/widgets.dart';
 import '../../utilities/utilities.dart';
@@ -73,6 +74,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
   }
 
   WholesellerModel? _wholesellerModel;
+  Location? _location;
 
   String? _shopName,
       _ownerName,
@@ -342,7 +344,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
     return TextFormField(
       textInputAction: TextInputAction.next,
       controller: TextEditingController(text: _minPurchaseAmount ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _minPurchaseAmount = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Minimum purchase amount eligible for delivery',
@@ -407,7 +409,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
     return TextFormField(
       textInputAction: TextInputAction.done,
       controller: TextEditingController(text: _mpesaPaybillAccountNumber ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _mpesaPaybillAccountNumber = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Mpesa Paybill Account Number',
@@ -460,48 +462,61 @@ class _WholesalerFormState extends State<WholesalerForm> {
   }
 
   _onSubmitButtonPressed() {
-    final FormState _form = _wholesalerFormKey.currentState!;
-    if (_form.validate()) {
-      _form.save();
-
-      _wholesellerModel = WholesellerModel(
-        doesDeliver: _doesDeliver,
-        equityTillNumber: _equityTill,
-        goodsSold: _goodsSoldSelection,
-        isHappyForProduct: _isHappy,
-        kcbTillNumber: _kcbTill,
-        minPurchaseAmountForDelivery: _minPurchaseAmount,
-        mpesaPaybillAccountNumber: _mpesaPaybillAccountNumber,
-        mpesaPaybillNumber: _mpesaPaybillNumber,
-        mpesaTillNumber: _mpesaTillNumber,
-        otherDeliveryInfo: _otherDeliveryInfo,
-        otherPaymentInfo: _otherPaymentInfo,
-        ownerMobile: _ownerMobile,
-        ownerName: _ownerName,
-        paymentOptions: _paymentOptions,
-        shopName: _shopName,
+    getDevicePosition().then((value) {
+      _location = Location(
+        latitude: value.latitude,
+        longitude: value.longitude,
       );
 
-      _onSubmitHandler().then((value) {
-        if (value.runtimeType == String) {
+      final FormState _form = _wholesalerFormKey.currentState!;
+      if (_form.validate()) {
+        _form.save();
+
+        _wholesellerModel = WholesellerModel(
+          doesDeliver: _doesDeliver,
+          equityTillNumber: _equityTill,
+          location: _location,
+          goodsSold: _goodsSoldSelection,
+          isHappyForProduct: _isHappy,
+          kcbTillNumber: _kcbTill,
+          minPurchaseAmountForDelivery: _minPurchaseAmount,
+          mpesaPaybillAccountNumber: _mpesaPaybillAccountNumber,
+          mpesaPaybillNumber: _mpesaPaybillNumber,
+          mpesaTillNumber: _mpesaTillNumber,
+          otherDeliveryInfo: _otherDeliveryInfo,
+          otherPaymentInfo: _otherPaymentInfo,
+          ownerMobile: _ownerMobile,
+          ownerName: _ownerName,
+          paymentOptions: _paymentOptions,
+          shopName: _shopName,
+        );
+
+        _onSubmitHandler().then((value) {
+          if (value.runtimeType == String) {
+            Future.delayed(Constants.veryFluidDuration, () {
+              dialogInfo(context, value, 'Error');
+            });
+          } else {
+            _form.reset();
+            Future.delayed(Constants.veryFluidDuration, () {
+              dialogSuccess(context, 'Data saved');
+            });
+          }
+        }).catchError((error, trace) {
           Future.delayed(Constants.veryFluidDuration, () {
-            dialogInfo(context, value, 'Error');
+            dialogInfo(
+              context,
+              error.toString(),
+              'Error',
+            );
           });
-        } else {
-          Future.delayed(Constants.veryFluidDuration, () {
-            dialogSuccess(context, 'Data saved');
-          });
-        }
-      }).catchError((error, trace) {
-        Future.delayed(Constants.veryFluidDuration, () {
-          dialogInfo(
-            context,
-            error.toString(),
-            'Error',
-          );
         });
+      }
+    }).catchError((error, trace) {
+      Future.delayed(Constants.veryFluidDuration, () {
+        dialogInfo(context, error.toString(), 'Error');
       });
-    }
+    });
   }
 
   @override

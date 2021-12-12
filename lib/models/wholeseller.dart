@@ -1,7 +1,10 @@
+import '../models/models.dart';
+
 class WholesellerModel {
   String? shopName;
   String? ownerName;
   String? ownerMobile;
+  Location? location;
   List<dynamic>? goodsSold;
   List<dynamic>? paymentOptions;
   String? mpesaTillNumber;
@@ -19,6 +22,7 @@ class WholesellerModel {
     this.shopName,
     this.ownerName,
     this.ownerMobile,
+    this.location,
     this.goodsSold,
     this.paymentOptions,
     this.mpesaTillNumber,
@@ -37,6 +41,7 @@ class WholesellerModel {
         'shopName': shopName,
         'ownerName': ownerName,
         'ownerMobile': ownerMobile,
+        'location': location != null ? location!.toMap() : null,
         'goodsSold': goodsSold,
         'paymentOptions': paymentOptions,
         'mpesaTillNumber': mpesaTillNumber,
