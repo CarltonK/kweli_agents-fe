@@ -354,7 +354,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
     return TextFormField(
       textInputAction: TextInputAction.done,
       controller: TextEditingController(text: _otherDeliveryInfo ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _otherDeliveryInfo = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Other notes about delivery charges and radius',
