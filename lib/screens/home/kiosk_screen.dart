@@ -945,6 +945,7 @@ class _KioskFormState extends State<KioskForm> {
           location: _location,
           improvementsToCurrentSystemNeeded: _currentSystemImprovements,
           generalFeedback: _generalFeedback,
+          addedAt: DateTime.now(),
           isMpesaAgent: _otherProducts.contains('Mpesa Withdrawal/deposit'),
           needsCreditForFloat: _wouldNeedCreditForFloat,
           kioskOwnerGender: genderGroupValue == -1

@@ -7,6 +7,7 @@ class RadioModel {
 
 RadioModel male = RadioModel(value: 0, title: 'Male');
 RadioModel female = RadioModel(value: 1, title: 'Female');
+
 RadioModel shortTerm = RadioModel(value: 0, title: '1 - 2 months');
 RadioModel mediumTerm = RadioModel(value: 1, title: '3 - 5 months');
 RadioModel longTerm = RadioModel(value: 2, title: '6 - 8 months');

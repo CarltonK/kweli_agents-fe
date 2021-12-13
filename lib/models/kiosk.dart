@@ -37,6 +37,7 @@ class KioskModel {
   String? improvementsToCurrentSystemNeeded;
   String? generalFeedback;
   Location? location;
+  DateTime? addedAt;
 
   KioskModel({
     this.kioskName,
@@ -75,6 +76,7 @@ class KioskModel {
     this.improvementsToCurrentSystemNeeded,
     this.generalFeedback,
     this.location,
+    this.addedAt,
   });
 
   Map<String, dynamic> toMap() => {
@@ -114,5 +116,6 @@ class KioskModel {
         'improvementsToCurrentSystemNeeded': improvementsToCurrentSystemNeeded,
         'generalFeedback': generalFeedback,
         'location': location != null ? location!.toMap() : null,
+        'addedAt': addedAt,
       };
 }

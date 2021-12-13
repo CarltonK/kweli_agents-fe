@@ -483,6 +483,7 @@ class _WholesalerFormState extends State<WholesalerForm> {
           mpesaTillNumber: _mpesaTillNumber,
           otherDeliveryInfo: _otherDeliveryInfo,
           otherPaymentInfo: _otherPaymentInfo,
+          addedAt: DateTime.now(),
           ownerMobile: _ownerMobile,
           ownerName: _ownerName,
           paymentOptions: _paymentOptions,

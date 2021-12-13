@@ -171,9 +171,9 @@ class Constants {
   ];
 
   static const String viabilityForWholesaler = 'Are you happy for your '
-      'customers to buy their goods through you via an app. You get paid immediately but '
+      'customers to buy their goods through you via an app? You get paid immediately but '
       'you have to confirm goods are available and prices, with payments received to'
-      ' the your mpesa till number.We don\'t take any commission , '
-      'we are helping kiosks maintain records to enable them access '
+      ' the your mpesa till number. We charge a commission for each sale made on the platform. '
+      'We are helping kiosks maintain records to enable them access '
       'affordable credit from ourselves and banks/sacco\'s to buy goods from you';
 }

@@ -17,6 +17,7 @@ class WholesellerModel {
   bool? doesDeliver;
   String? minPurchaseAmountForDelivery;
   String? otherDeliveryInfo;
+  DateTime? addedAt;
 
   WholesellerModel({
     this.shopName,
@@ -35,6 +36,7 @@ class WholesellerModel {
     this.doesDeliver,
     this.minPurchaseAmountForDelivery,
     this.otherDeliveryInfo,
+    this.addedAt,
   });
 
   Map<String, dynamic> toMap() => {
@@ -54,5 +56,6 @@ class WholesellerModel {
         'doesDeliver': doesDeliver,
         'minPurchaseAmountForDelivery': minPurchaseAmountForDelivery,
         'otherDeliveryInfo': otherDeliveryInfo,
+        'addedAt': addedAt,
       };
 }
