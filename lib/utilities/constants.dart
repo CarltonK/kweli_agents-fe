@@ -123,6 +123,7 @@ class Constants {
     'Mpesa paybill',
     'Equity till',
     'KCB till',
+    'Cash',
     'Others'
   ];
 
@@ -158,6 +159,7 @@ class Constants {
     'Mpesa paybill',
     'Equity till',
     'KCB till',
+    'Cash',
     'Others'
   ];
 
