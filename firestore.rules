@@ -18,7 +18,7 @@ service cloud.firestore {
       allow create: if isSignedIn();
     }
 
-    match /wholesellers/{wholeseller} {
+    match /wholesalers/{wholesaler} {
       allow create: if isSignedIn();
     }
   }

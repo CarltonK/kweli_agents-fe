@@ -21,7 +21,7 @@ class DatabaseProvider {
 
   Future saveWholeseller(WholesellerModel wholeseller) async {
     try {
-      CollectionReference colRef = _db.collection('wholesellers');
+      CollectionReference colRef = _db.collection('wholesalers');
       await colRef.add(wholeseller.toMap());
     } on FirebaseException catch (error) {
       return error.message;
