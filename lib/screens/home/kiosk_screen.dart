@@ -80,30 +80,33 @@ class _KioskFormState extends State<KioskForm> {
       _mpesaPaybillAccountNumber,
       _equityTill,
       _kcbTill,
-      _otherPaymentInfo,
       _personRunning,
       _creditAllowed,
       _outlet,
-      _mpesaTill,
+      _mpesaAgentNumber,
       _computerSystem,
-      _financing,
+      _currentSystemImprovements,
+      _generalFeedback,
       _personRunningMobile;
+
+  int genderGroupValue = -1;
+  int businessDurationGroupValue = -1;
+  int locationDurationGroupValue = -1;
+
+  bool _isOwned = true;
+  bool _doesAcceptMpesaPayment = true;
+  bool _isInterestedInCredit = true;
+  bool _isOwnerRunning = true;
+  bool _doesSellOnCredit = true;
+  bool _doesHaveOtherOutlets = false;
+  bool _wouldUseAppToRecord = true;
+  bool _wouldLikeDelivery = true;
+  bool _doesRecordAlready = false;
+  bool _wouldNeedCreditForFloat = true;
 
   final List<String> _goodsSoldSelection = [];
   final List<String> _paymentOptions = [];
   final List<String> _shopPaymentOptions = [];
-  final List<String> _mpesaAccepted = [];
-  final List<String> _buyFromAppOptions = [];
-  final List<String> _genderOptions = [];
-  final List<String> _ownershipOptions = [];
-  final List<String> _businessDuration = [];
-  final List<String> _locationDuration = [];
-  final List<String> _ownerRunning = [];
-  final List<String> _creditAccepted = [];
-  final List<String> _recordSales = [];
-  final List<String> _delivery = [];
-  final List<String> _computerizedSystem = [];
-  final List<String> _otherOutlets = [];
   final List<String> _otherProducts = [];
 
   KioskModel? _kioskModel;
@@ -135,7 +138,7 @@ class _KioskFormState extends State<KioskForm> {
         FocusScope.of(context).requestFocus(_focusOwnerName);
       },
       decoration: const InputDecoration(
-        helperText: 'Kiosk  name',
+        helperText: 'Kiosk name',
       ),
     );
   }
@@ -196,25 +199,10 @@ class _KioskFormState extends State<KioskForm> {
 
   TextFormField buildFavWholesalerField() {
     return TextFormField(
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       keyboardType: TextInputType.text,
       onSaved: (newValue) => _favWholeSaler = newValue!.trim(),
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: 'Kiosk owner name' + Constants.kRequiredField);
-        }
-        return;
-      },
-      // validator: (value) {
-      //   if (value!.isEmpty) {
-      //     addError(error: 'Kiosk owner name' + Constants.kRequiredField);
-      //     return;
-      //   }
-      //   return null;
-      // },
-      // onFieldSubmitted: (value) {
-      //   FocusScope.of(context).requestFocus(_focusOwnerName);
-      // },
+      onChanged: (newValue) => _favWholeSaler = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Favorite wholesaler name',
       ),
@@ -292,25 +280,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Do you accept Mpesa payments?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _mpesaAccepted),
-                        onSelected: (newValue) {
-                          if (!_mpesaAccepted.contains(e)) {
-                            _mpesaAccepted.add(e);
-                          } else {
-                            _mpesaAccepted.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _doesAcceptMpesaPayment,
+            onChanged: (value) {
+              _doesAcceptMpesaPayment = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -325,25 +300,12 @@ class _KioskFormState extends State<KioskForm> {
           const Text(
               'Would you be interested to access credit through app to make purchases directly from your wholesalers?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _buyFromAppOptions),
-                        onSelected: (newValue) {
-                          if (!_buyFromAppOptions.contains(e)) {
-                            _buyFromAppOptions.add(e);
-                          } else {
-                            _buyFromAppOptions.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _isInterestedInCredit,
+            onChanged: (value) {
+              _isInterestedInCredit = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -357,26 +319,21 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text("Kiosk owner's gender"),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.genderOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _genderOptions),
-                        onSelected: (newValue) {
-                          if (!_genderOptions.contains(e)) {
-                            _genderOptions.add(e);
-                          } else {
-                            _genderOptions.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
-          )
+          ...genderOptions
+              .map((e) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: RadioListTile<int>(
+                      title: Text(e.title!),
+                      value: e.value!,
+                      groupValue: genderGroupValue,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (newValue) {
+                        genderGroupValue = newValue!;
+                        setState(() {});
+                      },
+                    ),
+                  ))
+              .toList(),
         ],
       ),
     );
@@ -387,27 +344,14 @@ class _KioskFormState extends State<KioskForm> {
       width: double.infinity,
       child: Column(
         children: [
-          const Text('Kiosk owned or rented'),
+          const Text('Kiosk owned or rented(Owned=checked)'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.ownedRented
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _ownershipOptions),
-                        onSelected: (newValue) {
-                          if (!_ownershipOptions.contains(e)) {
-                            _ownershipOptions.add(e);
-                          } else {
-                            _ownershipOptions.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _isOwned,
+            onChanged: (value) {
+              _isOwned = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -421,26 +365,20 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('How long have you been in business?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.businessDuration
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _businessDuration),
-                        onSelected: (newValue) {
-                          if (!_businessDuration.contains(e)) {
-                            _businessDuration.add(e);
-                          } else {
-                            _businessDuration.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
-          )
+          ...durationOptions
+              .map(
+                (e) => RadioListTile<int>(
+                  title: Text(e.title!),
+                  value: e.value!,
+                  groupValue: businessDurationGroupValue,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  onChanged: (newValue) {
+                    businessDurationGroupValue = newValue!;
+                    setState(() {});
+                  },
+                ),
+              )
+              .toList(),
         ],
       ),
     );
@@ -453,26 +391,21 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('How long have you been at this location?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.businessDuration
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _locationDuration),
-                        onSelected: (newValue) {
-                          if (!_locationDuration.contains(e)) {
-                            _locationDuration.add(e);
-                          } else {
-                            _locationDuration.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
-          )
+          ...durationOptions
+              .map((e) => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    child: RadioListTile<int>(
+                      title: Text(e.title!),
+                      value: e.value!,
+                      groupValue: locationDurationGroupValue,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (newValue) {
+                        locationDurationGroupValue = newValue!;
+                        setState(() {});
+                      },
+                    ),
+                  ))
+              .toList(),
         ],
       ),
     );
@@ -627,25 +560,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Is the owner running the kiosk?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _ownerRunning),
-                        onSelected: (newValue) {
-                          if (!_ownerRunning.contains(e)) {
-                            _ownerRunning.add(e);
-                          } else {
-                            _ownerRunning.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _isOwnerRunning,
+            onChanged: (value) {
+              _isOwnerRunning = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -657,7 +577,7 @@ class _KioskFormState extends State<KioskForm> {
       duration: Constants.veryFluidDuration,
       switchInCurve: Curves.easeInCubic,
       switchOutCurve: Curves.easeOutCubic,
-      child: _ownerRunning.contains('No')
+      child: !_isOwnerRunning
           ? Column(
               children: [
                 buildPersonRunningNameField(),
@@ -700,25 +620,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Do you sell on credit?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _creditAccepted),
-                        onSelected: (newValue) {
-                          if (!_creditAccepted.contains(e)) {
-                            _creditAccepted.add(e);
-                          } else {
-                            _creditAccepted.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _doesSellOnCredit,
+            onChanged: (value) {
+              _doesSellOnCredit = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -730,7 +637,7 @@ class _KioskFormState extends State<KioskForm> {
       duration: Constants.veryFluidDuration,
       switchInCurve: Curves.easeInCubic,
       switchOutCurve: Curves.easeOutCubic,
-      child: _creditAccepted.contains('Yes')
+      child: _doesSellOnCredit
           ? Column(
               children: [
                 buildCreditDaysField(),
@@ -747,7 +654,7 @@ class _KioskFormState extends State<KioskForm> {
       keyboardType: TextInputType.number,
       onChanged: (newValue) => _creditAllowed = newValue.trim(),
       decoration: const InputDecoration(
-        helperText: 'How long do people take to pay you?',
+        helperText: 'How long do people take to pay you(days)?',
       ),
     );
   }
@@ -759,25 +666,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Do you have other outlets?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _otherOutlets),
-                        onSelected: (newValue) {
-                          if (!_otherOutlets.contains(e)) {
-                            _otherOutlets.add(e);
-                          } else {
-                            _otherOutlets.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _doesHaveOtherOutlets,
+            onChanged: (value) {
+              _doesHaveOtherOutlets = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -789,7 +683,7 @@ class _KioskFormState extends State<KioskForm> {
       duration: Constants.veryFluidDuration,
       switchInCurve: Curves.easeInCubic,
       switchOutCurve: Curves.easeOutCubic,
-      child: _otherOutlets.contains('Yes')
+      child: _doesHaveOtherOutlets
           ? Column(
               children: [
                 buildotherOutletsLocationField(),
@@ -851,7 +745,7 @@ class _KioskFormState extends State<KioskForm> {
       child: _otherProducts.contains('Mpesa Withdrawal/deposit')
           ? Column(
               children: [
-                buildMpesaTillField(),
+                buildMpesaAgentNumberField(),
                 SizedBox(height: getProportionateScreenHeight(20)),
                 buildFinancingOptionField()
               ],
@@ -860,26 +754,33 @@ class _KioskFormState extends State<KioskForm> {
     );
   }
 
-  TextFormField buildMpesaTillField() {
+  TextFormField buildMpesaAgentNumberField() {
     return TextFormField(
       textInputAction: TextInputAction.done,
-      controller: TextEditingController(text: _mpesaTill ?? ''),
+      controller: TextEditingController(text: _mpesaAgentNumber ?? ''),
       keyboardType: TextInputType.number,
-      onChanged: (newValue) => _mpesaTill = newValue.trim(),
+      onChanged: (newValue) => _mpesaAgentNumber = newValue.trim(),
       decoration: const InputDecoration(
-        helperText: 'Mpesa Till number',
+        helperText: 'Mpesa Agent number',
       ),
     );
   }
 
-  TextFormField buildFinancingOptionField() {
-    return TextFormField(
-      textInputAction: TextInputAction.done,
-      controller: TextEditingController(text: _financing ?? ''),
-      keyboardType: TextInputType.text,
-      onChanged: (newValue) => _financing = newValue.trim(),
-      decoration: const InputDecoration(
-        helperText: 'Would you need credit for your float?',
+  buildFinancingOptionField() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        children: [
+          const Text('Would you need credit for your float?'),
+          SizedBox(height: getProportionateScreenHeight(5)),
+          Checkbox(
+            value: _wouldNeedCreditForFloat,
+            onChanged: (value) {
+              _wouldNeedCreditForFloat = value!;
+              setState(() {});
+            },
+          )
+        ],
       ),
     );
   }
@@ -891,25 +792,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Would you like your purchases delivereed at a fee?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _delivery),
-                        onSelected: (newValue) {
-                          if (!_delivery.contains(e)) {
-                            _delivery.add(e);
-                          } else {
-                            _delivery.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _wouldLikeDelivery,
+            onChanged: (value) {
+              _wouldLikeDelivery = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -923,25 +811,12 @@ class _KioskFormState extends State<KioskForm> {
         children: [
           const Text('Would you use the app to record sales and expenditure?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _recordSales),
-                        onSelected: (newValue) {
-                          if (!_recordSales.contains(e)) {
-                            _recordSales.add(e);
-                          } else {
-                            _recordSales.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _wouldUseAppToRecord,
+            onChanged: (value) {
+              _wouldUseAppToRecord = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -956,25 +831,12 @@ class _KioskFormState extends State<KioskForm> {
           const Text(
               'Do you keep computerized records of daily sales/expenditure/customers who owe you ?'),
           SizedBox(height: getProportionateScreenHeight(5)),
-          Wrap(
-            direction: Axis.horizontal,
-            children: Constants.yesNoOptions
-                .map((e) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2),
-                      child: ChoiceChip(
-                        label: Text(e),
-                        selected: isChecked(e, _computerizedSystem),
-                        onSelected: (newValue) {
-                          if (!_computerizedSystem.contains(e)) {
-                            _computerizedSystem.add(e);
-                          } else {
-                            _computerizedSystem.remove(e);
-                          }
-                          setState(() {});
-                        },
-                      ),
-                    ))
-                .toList(),
+          Checkbox(
+            value: _doesRecordAlready,
+            onChanged: (value) {
+              _doesRecordAlready = value!;
+              setState(() {});
+            },
           )
         ],
       ),
@@ -986,9 +848,13 @@ class _KioskFormState extends State<KioskForm> {
       duration: Constants.veryFluidDuration,
       switchInCurve: Curves.easeInCubic,
       switchOutCurve: Curves.easeOutCubic,
-      child: _computerizedSystem.contains('Yes')
+      child: _doesRecordAlready
           ? Column(
-              children: [buildSystemField()],
+              children: [
+                buildSystemField(),
+                SizedBox(height: getProportionateScreenHeight(20)),
+                buildSystemImprovementsField(),
+              ],
             )
           : Container(),
     );
@@ -1002,6 +868,32 @@ class _KioskFormState extends State<KioskForm> {
       onChanged: (newValue) => _computerSystem = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'What system/application do you use?',
+      ),
+    );
+  }
+
+  TextFormField buildSystemImprovementsField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      controller: TextEditingController(text: _currentSystemImprovements ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _currentSystemImprovements = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText:
+            'What improvements would you want to see on the currecnt system you use',
+      ),
+    );
+  }
+
+  TextFormField buildGeneralFeedbackField() {
+    return TextFormField(
+      textInputAction: TextInputAction.done,
+      maxLines: 4,
+      controller: TextEditingController(text: _currentSystemImprovements ?? ''),
+      keyboardType: TextInputType.text,
+      onChanged: (newValue) => _currentSystemImprovements = newValue.trim(),
+      decoration: const InputDecoration(
+        helperText: 'General feedback',
       ),
     );
   }
@@ -1021,7 +913,50 @@ class _KioskFormState extends State<KioskForm> {
       if (_form.validate()) {
         _form.save();
 
-        _kioskModel = KioskModel();
+        _kioskModel = KioskModel(
+          kioskName: _kioskName,
+          kioskOwnerName: _kioskOwnerName,
+          kioskOwnerMobile: _kioskOwnerMobile,
+          isOwned: _isOwned,
+          favWholeseller: _favWholeSaler,
+          kioskGoods: _goodsSoldSelection,
+          kioskWholesellerPaymentOptions: _paymentOptions,
+          doesAcceptMpesa: _doesAcceptMpesaPayment,
+          howDoCustomersPayYou: _shopPaymentOptions,
+          mpesaTillNumber: _mpesaTillNumber,
+          mpesaPaybillNumber: _mpesaPaybillNumber,
+          mpesaPaybillAccountNumber: _mpesaPaybillAccountNumber,
+          mpesaAgentNumbers: [_mpesaAgentNumber],
+          isInterestedInProduct: _isInterestedInCredit,
+          equityTillNumber: _equityTill,
+          kcbTillNumber: _kcbTill,
+          isOwnerRunningKiosk: _isOwnerRunning,
+          personRunningKioskName: _personRunning,
+          personRunningKioskMobile: _personRunningMobile,
+          doesSellOnCredit: _doesSellOnCredit,
+          howLongTillPeoplePayYouBack: _creditAllowed,
+          hasOtherOutlets: _doesHaveOtherOutlets,
+          otherOutletLocation: _outlet,
+          otherServices: _otherProducts,
+          wouldUseProductToRecord: _wouldUseAppToRecord,
+          wouldLikePurchasesDelivered: _wouldLikeDelivery,
+          doesKeepComputerizedRecords: _doesRecordAlready,
+          systemInUse: _computerSystem,
+          location: _location,
+          improvementsToCurrentSystemNeeded: _currentSystemImprovements,
+          generalFeedback: _generalFeedback,
+          isMpesaAgent: _otherProducts.contains('Mpesa Withdrawal/deposit'),
+          needsCreditForFloat: _wouldNeedCreditForFloat,
+          kioskOwnerGender: genderGroupValue == -1
+              ? null
+              : genderOptions[genderGroupValue].title,
+          howLongInBusiness: businessDurationGroupValue == -1
+              ? null
+              : durationOptions[businessDurationGroupValue].title,
+          howLongInLocation: locationDurationGroupValue == -1
+              ? null
+              : durationOptions[locationDurationGroupValue].title,
+        );
 
         _onSubmitHandler().then((value) {
           if (value.runtimeType == String) {
@@ -1114,6 +1049,8 @@ class _KioskFormState extends State<KioskForm> {
           _buildcComputerizedSystemOptions(),
           SizedBox(height: getProportionateScreenHeight(20)),
           _computerizedSystemSelection(),
+          SizedBox(height: getProportionateScreenHeight(20)),
+          buildGeneralFeedbackField(),
           SizedBox(height: getProportionateScreenHeight(20)),
           GlobalActionButton(
             action: 'Submit',
