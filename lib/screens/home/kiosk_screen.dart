@@ -107,9 +107,6 @@ class _KioskFormState extends State<KioskForm> {
   final List<String> _goodsSoldSelection = [];
   final List<String> _paymentOptions = [];
   final List<String> _shopPaymentOptions = [];
-  final List<String> _genderOptions = [];
-  final List<String> _businessDuration = [];
-  final List<String> _locationDuration = [];
   final List<String> _otherProducts = [];
 
   KioskModel? _kioskModel;
