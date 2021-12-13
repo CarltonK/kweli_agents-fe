@@ -545,7 +545,7 @@ class _KioskFormState extends State<KioskForm> {
     return TextFormField(
       textInputAction: TextInputAction.done,
       controller: TextEditingController(text: _mpesaPaybillAccountNumber ?? ''),
-      keyboardType: TextInputType.number,
+      keyboardType: TextInputType.text,
       onChanged: (newValue) => _mpesaPaybillAccountNumber = newValue.trim(),
       decoration: const InputDecoration(
         helperText: 'Mpesa Paybill Account Number',
